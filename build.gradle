@@ -1,0 +1,63 @@
+group 'io.thirdplanet'
+version '1.0-SNAPSHOT'
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.3'
+    distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
+}
+
+apply plugin: 'java'
+apply plugin: 'scala'
+apply plugin: 'idea'
+
+sourceCompatibility = 1.8
+def scalaVersion ='2.11.8'
+repositories {
+    mavenCentral()
+    maven {
+        url "https://dl.bintray.com/spark-jobserver/maven"
+    }
+}
+configurations {
+    provided
+}
+sourceSets {
+    main {
+        compileClasspath += configurations.provided
+    }
+}
+dependencies {
+    compile 'org.slf4j:slf4j-api:1.7.5'
+    compile "org.scala-lang:scala-library:"+scalaVersion
+    compile "org.scala-lang:scala-reflect:"+scalaVersion
+    compile "org.scala-lang:scala-compiler:"+scalaVersion
+    // https://mvnrepository.com/artifact/com.typesafe/config
+    //compile group: 'com.typesafe', name: 'config', version: '1.3.1'
+    //compile group: 'org.scala-lang', name: 'scala-library', version: '2.12.2'
+    compile 'org.apache.spark:spark-mllib_2.11:2.1.0'
+    compile 'org.apache.spark:spark-sql_2.11:2.1.0'
+    compile 'org.apache.spark:spark-streaming-flume-assembly_2.11:2.1.0'
+    compile 'org.apache.spark:spark-graphx_2.11:2.1.0'
+    compile 'org.apache.spark:spark-launcher_2.11:2.1.0'
+    compile 'org.apache.spark:spark-catalyst_2.11:2.1.0'
+    compile 'org.apache.spark:spark-streaming_2.11:2.1.0'
+    compile 'org.apache.spark:spark-core_2.11:2.1.0'
+    compile 'spark.jobserver:job-server-api_2.10:0.7.0'
+    compile 'spark.jobserver:job-server-extras_2.10:0.7.0'
+    // https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients
+    compile group: 'org.apache.kafka', name: 'kafka-clients', version: '0.11.0.0'
+    // https://mvnrepository.com/artifact/org.apache.spark/spark-streaming-kafka-0-8_2.11
+    provided group: 'org.apache.spark', name: 'spark-streaming-kafka-0-8_2.11', version: '2.2.0'
+
+    // https://mvnrepository.com/artifact/commons-logging/commons-logging
+    compile group: 'commons-logging', name: 'commons-logging', version: '1.1.1'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+task run(type:JavaExec,dependsOn:classes){
+    main='Main'
+    classpath sourceSets.main.runtimeClasspath
+    classpath configurations.runtime
+}
+
