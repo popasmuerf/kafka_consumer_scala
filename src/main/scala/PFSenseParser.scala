@@ -1,3 +1,5 @@
+import org.apache.spark.rdd.RDD
+
 /**
   * Created by mdb on 7/13/17.
   */
@@ -37,13 +39,21 @@ object PFsenseParser {
     val protocol: Option[String] = protocolPttrn.findFirstIn(record)
     val recordStr = buildRecordStr(day, time, dateTime, ipAddress, port, action, protocol)
     if (recordStr != None) {
-      //println(s"line:${lineNumber}" + " " + recordStr.get)
       return recordStr
     }
     else {
-      println(s"Record at line:${lineNumber} does not conform to known format")
+      println("error:Bad Line Regex")
       return None
     }
+  }
+  def printRecord(arg1:String): Unit ={
+    println(arg1)
+  }
+  def printRecord(arg1:String,arg2:String): Unit ={
+    println(arg1)
+  }
+  def procRDD(rdd:RDD[String]): Unit ={
+
   }
   def buildRecordStr(day:Option[String],time:Option[String],dateTime:Option[String],ipAddress:Option[List[String]],port:Option[List[String]],action:Option[String],protocol:Option[String]): Option[String] = {
     var recordStr:String = ""

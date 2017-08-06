@@ -1,4 +1,6 @@
 import java.util
+
+import org.apache.spark.rdd.RDD
 //import java.util.Set
 //import java.util.HashSet
 import java.util.HashMap
@@ -48,12 +50,15 @@ object Driver {
     Logger.getLogger("org.apache.spark.streaming.dstream.WindowedDStream").setLevel(Level.DEBUG)
     Logger.getLogger("org.apache.spark.streaming.DStreamGraph").setLevel(Level.DEBUG)
     Logger.getLogger("org.apache.spark.streaming.scheduler.JobGenerator").setLevel(Level.DEBUG)
-
     import _root_.kafka.serializer.StringDecoder
-    val kafkaParams = Map("metadata.broker.list" -> "localhost:9092")
-    val kafkaTopics = Set(topic)
-    val records = KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder](ssc, kafkaParams, kafkaTopics)
-    records.print()
+    val kafkaParams: Map[String, String] = Map("metadata.broker.list" -> "localhost:9092")
+    val kafkaTopics: Set[String] = Set(topic)
+    val recordsInputDStream: InputDStream[(String, String)] = KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder](ssc, kafkaParams, kafkaTopics)
+    recordsInputDStream.persist()
+    val elementDStream: Unit = recordsInputDStream.map(log => log._2).foreachRDD{
+      rdd => rdd.map(line => PFsenseParser.parseRecord(line))
+    }
+    recordsInputDStream.saveAsTextFiles("/tmp/pfsense/log")
     ssc.start()
     ssc.awaitTermination()
   }
