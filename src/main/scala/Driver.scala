@@ -27,6 +27,22 @@ import org.apache.spark.streaming.kafka.KafkaUtils
   * <group> is the name of kafka consumer group
   * <topics> is a list of one or more kafka tioics to consume from <numThreads> is the
   * number of threads the kafka cosnumer should use
+  *
+  *
+  * submitting a spark job :
+  *
+  * ./bin/spark-submit \
+  * --class <main-class> \
+  *--master <master-url> \
+  *--deploy-mode <deploy-mode> \
+  *--conf <key>=<value> \
+  * ... # other options
+  *<application-jar> \
+  *[application-arguments]
+  *
+  *
+  *
+  *
   */
 object Driver {
   val zkQuorum = "zookp1"
@@ -56,7 +72,7 @@ object Driver {
     val recordsInputDStream: InputDStream[(String, String)] = KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder](ssc, kafkaParams, kafkaTopics)
     recordsInputDStream.persist()
     val elementDStream: Unit = recordsInputDStream.map(log => log._2).foreachRDD{
-      rdd => rdd.map(line => PFsenseParser.parseRecord(line))
+      rdd => rdd.map(line => PFSenseParser.parseRecordToStr(line))
     }
     recordsInputDStream.saveAsTextFiles("/tmp/pfsense/log")
     ssc.start()

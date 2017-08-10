@@ -1,6 +1,7 @@
 products:
-   src/main/scala/Driver.scala -> build/classes/scala/main/Driver$$anonfun$main$1$$anonfun$apply$1.class
-   src/main/scala/Driver.scala -> build/classes/scala/main/Driver$$anonfun$main$1.class
+   src/main/scala/Driver.scala -> build/classes/scala/main/Driver$$anonfun$1.class
+   src/main/scala/Driver.scala -> build/classes/scala/main/Driver$$anonfun$2$$anonfun$apply$1.class
+   src/main/scala/Driver.scala -> build/classes/scala/main/Driver$$anonfun$2.class
    src/main/scala/Driver.scala -> build/classes/scala/main/Driver$.class
    src/main/scala/Driver.scala -> build/classes/scala/main/Driver.class
    src/main/scala/PFSenseParser.scala -> build/classes/scala/main/PFsenseParser$.class
@@ -24,7 +25,8 @@ external dependencies:
 class names:
    src/main/scala/Driver.scala -> Driver
    src/main/scala/Driver.scala -> Driver$
-   src/main/scala/Driver.scala -> Driver$$anonfun$main$1
-   src/main/scala/Driver.scala -> Driver$$anonfun$main$1$$anonfun$apply$1
+   src/main/scala/Driver.scala -> Driver$$anonfun$1
+   src/main/scala/Driver.scala -> Driver$$anonfun$2
+   src/main/scala/Driver.scala -> Driver$$anonfun$2$$anonfun$apply$1
    src/main/scala/PFSenseParser.scala -> PFsenseParser
    src/main/scala/PFSenseParser.scala -> PFsenseParser$
