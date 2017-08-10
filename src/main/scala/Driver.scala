@@ -72,7 +72,7 @@ object Driver {
     val recordsInputDStream: InputDStream[(String, String)] = KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder](ssc, kafkaParams, kafkaTopics)
     recordsInputDStream.persist()
     val elementDStream: Unit = recordsInputDStream.map(log => log._2).foreachRDD{
-      rdd => rdd.map(line => PFSenseParser.parseRecordToStr(line))
+      rdd => rdd.map(line => PFSenseParser.parseRecordToMap(line))
     }
     recordsInputDStream.saveAsTextFiles("/tmp/pfsense/log")
     ssc.start()
